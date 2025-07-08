@@ -46,5 +46,8 @@ void Decoder::print(){
     
     for(int i = 0;i<decode.size();i++){
         std::cout<< decode[i]<<' ';
+
     }
+
+    std::cout<<std::endl;
 }
