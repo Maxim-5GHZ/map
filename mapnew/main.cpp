@@ -3,57 +3,57 @@
 #include <vector>
 
 using namespace std; 
-int main() {
-    
-    vector<string> codes = {
-        ".-- .-. ---",
-        "           ",
-        "fredwFDcwEF",
-        "--- --- erfref",
-        "f-- cxx --- .-- adde ---",
-        ".-- .-. --- .-- .-. --- .-- .-. --- .-- .-. ---",
-        "",
-        "------------------------------------------------"
-    };
 
-   
+std::vector<std::string> codes = {
+    ".-- .-. ---",
+    "           ",
+    "fredwFDcwEF",
+    "--- --- erfref",
+    "f-- cxx --- .-- adde ---",
+    ".-- .-. --- .-- .-. --- .-- .-. --- .-- .-. ---",
+    ""
+};
+
+vector<char> decoder(string line) {
+    vector<char> decode;
     map<string, char> Alphabet;
     Alphabet[".--"] = 'A';
     Alphabet[".-."] = 'B';
     Alphabet["---"] = 'C';
-
     
-    for (int i = 0; i < codes.size(); i++) {
-        string currentCode = codes[i]; 
-        string currentSymbol = "";    
-        vector<char> decodedLetters;   
-
-        for (char c : currentCode) {
-            if (c != ' ') {
-                
-                currentSymbol += c;
-            } else {
-                
-                if (Alphabet.count(currentSymbol) > 0) {
-              
-                    decodedLetters.push_back(Alphabet[currentSymbol]);
-                }
-                currentSymbol = ""; 
+    string symbl;
+    for (size_t i = 0; i < line.size(); ) {
+        if (line[i] == ' ') {
+            i++;
+            continue;
+        }
+        
+       
+        if (i + 3 > line.size()) {
+            break; 
+        }
+        
+        symbl = line[i]+line[i+1]+line[i+2];
+        if (Alphabet.count(symbl)) {
+            decode.push_back(Alphabet[symbl]);
+            i += 3;
+        } else {
+           
+            while (i < line.size() && line[i] != ' ') {
+                i++;
             }
         }
-
-
-        if (!currentSymbol.empty() && Alphabet.count(currentSymbol) > 0) {
-            decodedLetters.push_back(Alphabet[currentSymbol]);
-        }
-
-        
-        cout <<(i + 1) << " ";
-        for (char letter : decodedLetters) {
-            cout << letter << " ";
-        }
-        cout << endl;
     }
+    return decode;
+}
 
+int main() {
+    for (size_t i = 0; i < codes.size(); i++) {
+        cout << endl << i + 1 << " ";
+        vector<char> decode = decoder(codes[i]);
+        for (size_t j = 0; j < decode.size(); j++) { 
+            cout << decode[j] << ' ';
+        }
+    }
     return 0;
 }
