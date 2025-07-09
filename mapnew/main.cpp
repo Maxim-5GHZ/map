@@ -21,27 +21,34 @@ vector<char> decoder(string line) {
     Alphabet[".-."] = 'B';
     Alphabet["---"] = 'C';
     
-    string symbl;
-    for (size_t i = 0; i < line.size(); ) {
+    size_t i = 0;
+    while (i < line.size()) {
         if (line[i] == ' ') {
             i++;
             continue;
         }
-        
-       
-        if (i + 3 > line.size()) {
-            break; 
-        }
-        
-        symbl = line[i]+line[i+1]+line[i+2];
-        if (Alphabet.count(symbl)) {
-            decode.push_back(Alphabet[symbl]);
-            i += 3;
-        } else {
-           
-            while (i < line.size() && line[i] != ' ') {
-                i++;
+
+        if (i + 3 <= line.size()) {
+            bool valid = true;
+            for (size_t j = i; j < i + 3; j++) {
+                if (line[j] != '.' && line[j] != '-') {
+                    valid = false;
+                    break;
+                }
             }
+
+            if (valid) {
+                string symbl = line.substr(i, 3);
+                if (Alphabet.count(symbl)) {
+                    decode.push_back(Alphabet[symbl]);
+                    i += 3;
+                    continue;
+                }
+            }
+        }
+
+        while (i < line.size() && line[i] != ' ') {
+            i++;
         }
     }
     return decode;
